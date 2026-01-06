@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="header">
+  <h1>Make Investments</h1>
+  <div class="user-info">
+    <span class="username">{{ user.first_name }} {{ user.last_name }}</span>
+    <img src="{{ url_for('static', filename='uploads/' + profile_picture) }}" alt="User Avatar" class="avatar" />
+  </div>
+</div>
+
+<!-- Dashboard Cards -->
+<div class="dashboard-cards">
+  <div class="card">
+    <div class="card-header">
+      <span>Total Balance</span>
+      <div class="icon-box"><i class="fa-solid fa-wallet"></i></div>
+    </div>
+    <div class="card-amount">${{ '{:,.2f}'.format(wallet.total_balance_usd or 0.0) }}</div>
+
+    <div class="card-change positive">+12% <span>vs last month</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span>Total Earnings</span>
+      <div class="icon-box"><i class="fa-solid fa-dollar-sign"></i></div>
+    </div>
+    <div class="card-amount">${{ '{:,.2f}'.format(wallet.total_earnings_usd or 0.0) }}</div>
+
+    <div class="card-change positive">+8% <span>vs last month</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span>Total Invested</span>
+      <div class="icon-box"><i class="fa-solid fa-chart-line"></i></div>
+    </div>
+    <div class="card-amount">${{ '{:,.2f}'.format(wallet.total_invested_usd or 0.0) }}</div>
+    <div class="card-change positive">+5% <span>vs last month</span></div>
+  </div>
+</div>
+
+<div class="plan-detail-card">
+
+  <!-- Form errors -->
+  {% if form.errors %}
+  <div class="form-errors">
+    <ul>
+      {% for field, errors in form.errors.items() %}
+        {% for error in errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <h1>Invest in {{ plan.name }}</h1>
+  <p class="roi-line">
+    Monthly ROI: <span>{{ plan.monthly_roi }}%</span> 
+    <span class="separator">|</span> 
+    Period: <span>{{ plan.period_in_days }} days</span>
+  </p>
+  <p class="amount-line">
+    Min: <span>${{ plan.min_amount }}</span>, 
+    Max: <span>${{ plan.max_amount }}</span>
+  </p>
+</div>
+
+<div class="card investment-form-card">
+  <form class="auth-form" method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    {{ form.plan_id() }}
+
+    <div class="form-group">
+      {{ form.amount_invested(class="auth-input", placeholder="Amount To Invest") }}
+    </div>
+
+    <div>
+      <button type="submit" class="btn-primary">Invest</button>
+    </div>
+  </form>
+
+{% endblock content %}

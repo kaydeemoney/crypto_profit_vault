@@ -1,0 +1,73 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+
+<div class="card investment-form-card">
+
+      <!-- Flash messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash-message {{ category }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Form errors -->
+    {% if form.errors %}
+      <div class="form-errors">
+        <ul>
+          {% for field, errors in form.errors.items() %}
+            {% for error in errors %}
+              <li><strong>{{ field|capitalize }}:</strong> {{ error }}</li>
+            {% endfor %}
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    
+  <h2>Add New Investment Plan</h2>
+  <p class="subtext">Define new investment options for users</p>
+  <form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+      {{ form.name.label }}  
+      {{ form.name(class="form-control", placeholder="Enter plan name") }}
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        {{ form.min_amount.label }}
+        {{ form.min_amount(class="form-control", placeholder="e.g. 100.00") }}
+      </div>
+      <div class="form-group">
+        {{ form.max_amount.label }}
+        {{ form.max_amount(class="form-control", placeholder="e.g. 10000.00") }}
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        {{ form.period_in_days.label }}
+        {{ form.period_in_days(class="form-control", placeholder="e.g. 30") }}
+      </div>
+      <div class="form-group">
+        {{ form.monthly_roi.label }}
+        {{ form.monthly_roi(class="form-control", placeholder="e.g. 5.5") }}
+      </div>
+      <div class="form-group">
+        {{ form.annual_roi.label }}
+        {{ form.annual_roi(class="form-control", placeholder="e.g. 66.0") }}
+      </div>
+    </div>
+    <div class="form-group">
+      {{ form.comment.label }}
+      {{ form.comment(class="form-control", rows="3", placeholder="Extra information about this plan...") }}
+    </div>
+    {{ form.submit(class="btn btn-primary full-width") }}
+  </form>
+</div>
+{% endblock content %}

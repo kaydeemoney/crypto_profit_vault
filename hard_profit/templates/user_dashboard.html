@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="header">
+  <h1>Dashboard</h1>
+  <div class="user-info">
+    <span class="username">{{ user.first_name }} {{ user.last_name }}</span>
+    <img src="{{ url_for('static', filename='uploads/' + profile_picture) }}" alt="User Avatar" class="avatar" />
+  </div>
+</div>
+
+<!-- User Summary -->
+<section class="user-summary">
+  <div class="summary-card">
+    <div class="user-info">
+      <img src="{{ url_for('static', filename='uploads/' + profile_picture) }}" alt="User" class="profile-pic-lg" />
+      <div>
+        <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+        <p>{{ user.email }}</p>
+      </div>
+    </div>
+
+    <div class="balance-info">
+      <h4>Available Balance</h4>
+      <p>${{ '{:,.2f}'.format(wallet.withdrawable_balance or 0.0) }}</p>
+      <div class="buttons">
+        <a href="{{ url_for('deposit', email=session['email']) }}" style="text-decoration: none; color: inherit;">
+        <button class="deposit">Deposit</button>
+        </a>
+        <button class="withdraw">Withdraw</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Dashboard Cards -->
+<div class="dashboard-cards">
+  <div class="card">
+    <div class="card-header">
+      <span>Total Balance</span>
+      <div class="icon-box"><i class="fa-solid fa-wallet"></i></div>
+    </div>
+    <div class="card-amount">${{ '{:,.2f}'.format(wallet.total_balance_usd or 0.0) }}</div>
+
+    <div class="card-change positive">+12% <span>vs last month</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span>Total Earnings</span>
+      <div class="icon-box"><i class="fa-solid fa-dollar-sign"></i></div>
+    </div>
+    <div class="card-amount">${{ '{:,.2f}'.format(wallet.total_earnings_usd or 0.0) }}</div>
+
+    <div class="card-change positive">+8% <span>vs last month</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span>Total Invested</span>
+      <div class="icon-box"><i class="fa-solid fa-chart-line"></i></div>
+    </div>
+    <div class="card-amount">${{ '{:,.2f}'.format(wallet.total_invested_usd or 0.0) }}</div>
+    <div class="card-change positive">+5% <span>vs last month</span></div>
+  </div>
+</div>
+
+<!-- Active Investments -->
+<section class="investment-section">
+  <p class="investment-title">Active Investments</p>
+
+  {% if active_investments %}
+  <div class="cards-container">
+    {% for inv in active_investments %}
+    <div class="investment-card">
+      <div class="card-top">
+        <div class="plan-title">
+          <div class="plan-icon"><i class="fa-solid fa-wallet"></i></div>
+          <span class="plan-name">{{ inv.name }}</span>
+        </div>
+        <span class="status-badge">Active</span>
+      </div>
+      <div class="card-info">
+        <div class="info-group">
+          <label>Invested Amount</label>
+          <div class="info-value">${{ '{:,.2f}'.format(inv.amount_invested or 0.0) }}</div>
+        </div>
+        <div class="info-group">
+          <label>Expected Profit</label>
+          <div class="info-value profit">${{ '{:,.2f}'.format(inv.profit_earned or 0.0) }}</div>
+        </div>
+        <div class="info-group">
+          <label>ROI</label>
+          <div class="info-value">{{ inv.monthly_roi }}%</div>
+        </div>
+        <div class="info-group">
+          <label>End Date</label>
+          <div class="info-value">{{ inv.end_date.strftime('%d/%m/%Y') }}</div>
+        </div>
+      </div>
+      <div class="progress-section">
+        <label>Progress</label>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ inv.progress_percent }}%"></div>
+        </div>
+        <span class="progress-percent">{{ inv.progress_percent }}%</span>
+      </div>
+       <a href="{{ url_for('investment_details', user_id=user_id, plan_id=plan.plan_id, unique_id=inv.unique_id) }}">
+      <button class="details-btn">View Details</button>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="investment-card">
+    <div class="card-top">
+      <div class="plan-title">
+        <div class="plan-icon"><i class="fa-solid fa-wallet"></i></div>
+        <span class="plan-name">No Investments Yet</span>
+      </div>
+      <span class="status-badge">None</span>
+    </div>
+    <div class="card-info">
+      <div class="info-group">
+        <label>Invested Amount</label>
+        <div class="info-value">$0.00</div>
+      </div>
+      <div class="info-group">
+        <label>Expected Profit</label>
+        <div class="info-value profit">$0.00</div>
+      </div>
+      <div class="info-group">
+        <label>ROI</label>
+        <div class="info-value">0.00%</div>
+      </div>
+      <div class="info-group">
+        <label>End Date</label>
+        <div class="info-value">N/A</div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</section>
+
+<!-- Completed Investments -->
+<section class="investment-section">
+  <p class="investment-title">Completed Investments</p>
+
+  {% if completed_investments %}
+  <div class="cards-container">
+    {% for inv in completed_investments %}
+    <div class="investment-card">
+      <div class="card-top">
+        <div class="plan-title">
+          <div class="plan-icon"><i class="fa-solid fa-wallet"></i></div>
+          <span class="plan-name">{{ inv.name }}</span>
+        </div>
+        <span class="status-badge">Closed</span>
+      </div>
+      <div class="card-info">
+        <div class="info-group">
+          <label>Invested Amount</label>
+          <div class="info-value">${{ '{:,.2f}'.format(inv.amount_invested) }}</div>
+        </div>
+        <div class="info-group">
+          <label>Expected Profit</label>
+          <div class="info-value profit">${{ '{:,.2f}'.format(inv.profit_earned) }}</div>
+        </div>
+        <div class="info-group">
+          <label>ROI</label>
+          <div class="info-value">{{ inv.monthly_roi }}%</div>
+        </div>
+        <div class="info-group">
+          <label>End Date</label>
+          <div class="info-value">{{ inv.end_date.strftime('%d/%m/%Y') }}</div>
+        </div>
+      </div>
+      <a href="{{ url_for('investment_details', user_id=user_id, plan_id=plan.plan_id, unique_id=inv.unique_id) }}">
+      <button class="details-btn">View Details</button>
+      </a>
+
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="investment-card">
+    <div class="card-top">
+      <div class="plan-title">
+        <div class="plan-icon"><i class="fa-solid fa-wallet"></i></div>
+        <span class="plan-name">No Investments History</span>
+      </div>
+      <span class="status-badge">None</span>
+    </div>
+    <div class="card-info">
+      <div class="info-group">
+        <label>Invested Amount</label>
+        <div class="info-value">$0.00</div>
+      </div>
+      <div class="info-group">
+        <label>Expected Profit</label>
+        <div class="info-value profit">$0.00</div>
+      </div>
+      <div class="info-group">
+        <label>ROI</label>
+        <div class="info-value">0.00%</div>
+      </div>
+      <div class="info-group">
+        <label>End Date</label>
+        <div class="info-value">N/A</div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</section>
+
+{% endblock content %}

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Profit Vault Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+  <div class="menu-toggle" onclick="toggleSidebar()">
+    <i class="fa-solid fa-bars"></i>
+  </div>
+  
+  <div class="container">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <i class="fa-solid fa-house icon-yellow"></i>
+        <span class="logo-text">Profit Vault</span>
+      </div>
+      <ul class="nav-menu">
+
+
+        
+        <a href="{{ url_for('user_dashboard', email=session['email']) }}" style="text-decoration: none; color: inherit;">
+          <li class="nav-item active">
+            <i class="fa-solid fa-table-cells"></i>
+            <span>Dashboard</span>
+          </li>
+        </a>
+
+
+        <a href="{{ url_for('investments', email=session['email']) }}" style="text-decoration: none; color: inherit;">        
+        <li class="nav-item">
+          <i class="fa-solid fa-list-check"></i>
+          <span>Investment Plans</span>
+        </li>
+        </a>
+
+        <a href="{{ url_for('deposit', email=session['email']) }}" style="text-decoration: none; color: inherit;">
+          <li class="nav-item">
+            <i class="fa-solid fa-user"></i>
+            <span>Deposit</span>
+          </li>
+          </a>
+
+          <a href="{{ url_for('withdrawal', email=session['email']) }}" style="text-decoration: none; color: inherit;">
+            <li class="nav-item">
+              <i class="fa-solid fa-right-left"></i>
+              <span>Withdraw</span>
+            </li>
+        </a>
+
+
+        <a href="{{ url_for('user_referral_page', email=session['email']) }}" style="text-decoration: none; color: inherit;">
+          <li class="nav-item">
+            <i class="fa-solid fa-user"></i>
+            <span>Referral Program</span>
+          </li>
+          </a>
+
+
+        <a href="{{ url_for('transaction_history', email=session['email']) }}" style="text-decoration: none; color: inherit;">
+          <li class="nav-item">
+            <i class="fa-solid fa-user"></i>
+            <span>Transaction History</span>
+          </li>
+          </a>
+
+        <a href="{{ url_for('user_profile', email=session['email']) }}" style="text-decoration: none; color: inherit;">
+        <li class="nav-item">
+          <i class="fa-solid fa-user"></i>
+          <span>My Profile</span>
+        </li>
+        </a>
+
+        <a href="{{ url_for('user_chat', email=session['email']) }}" style="text-decoration: none; color: inherit;">
+          <li class="nav-item">
+            <i class="fa-solid fa-user"></i>
+            <span>Chat Admin</span>
+          </li>
+          </a>
+
+      </ul>
+
+
+      <div class="logout">
+
+        <a href="{{ url_for('logout', email=session['email']) }}" style="text-decoration: none; color: inherit;">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Logout</span>
+      </a>
+      </div>
+
+
+
+
+    </div>
+
+
+
+    <main class="main-content">
+
+      <!-- Flash Messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flashes">
+            {% for category, message in messages %}
+              <div class="flash-message {{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+    
+      {% block content %}
+    
+      {% endblock content %}
+    
+    </main>
+    
+  </div>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
+</body>
+</html>

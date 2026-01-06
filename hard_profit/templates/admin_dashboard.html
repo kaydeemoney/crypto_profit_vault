@@ -1,0 +1,28 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+
+<div class="card dashboard-card">
+  <h2>Admin Dashboard</h2>
+  <p class="subtext">Welcome to the Admin Control Panel</p>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+    <div class="stat-box">
+      <h3 class="stat-title">Total Users</h3>
+      <p class="stat-value"> {{ user_count }} </p>
+    </div>
+    <div class="stat-box">
+      <h3 class="stat-title">Total Deposits</h3>
+      <p class="stat-value"> {{ deposit }} </p>
+    </div>
+    <div class="stat-box">
+      <h3 class="stat-title">Pending Requests</h3>
+      <p class="stat-value"> {{ pending_request }} </p>
+    </div>
+  </div>
+
+ 
+</div>
+
+
+{% endblock content %}

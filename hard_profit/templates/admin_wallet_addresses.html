@@ -1,0 +1,27 @@
+{% extends "admin_base.html" %}
+{% block content %}
+<div class="card wallet-form-card">
+  <h2>Manage Admin Wallet Addresses</h2>
+  <p class="subtext">Add or update wallet addresses for various networks</p>
+
+  <form method="POST">
+    {{ form.hidden_tag() }}
+
+    {% for record in records %}
+      <div class="form-group">
+        <label for="{{ record.network }}">{{ record.network | upper }} Address</label>
+        <input type="text"
+               class="form-control"
+               id="{{ record.network }}"
+               name="{{ record.network }}"
+               value="{{ record.address }}"
+               placeholder="Enter {{ record.network | upper }} address">
+      </div>
+    {% endfor %}
+
+    <div class="form-group mt-4">
+      {{ form.submit(class="btn btn-primary full-width") }}
+    </div>
+  </form>
+</div>
+{% endblock content %}

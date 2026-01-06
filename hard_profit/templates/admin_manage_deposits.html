@@ -1,0 +1,58 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<div class="card deposit-table-card">
+  <h2>Pending Deposits Management</h2>
+  <p class="subtext">Review and manage pending deposit confirmations</p>
+
+  <div class="responsive-table-wrapper">
+    <table class="referral-table">
+      <thead>
+        <tr>
+          <th>User Email</th>
+          <th>Amount Deposited</th>
+          <th>Sender Wallet Address</th>
+          <th>Wallet Network</th>
+          <th>Estimated Sending Time</th>
+          <th>Comment</th>
+          <th>Status</th>
+          <th>Confirm</th>
+          <th>Reject</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in deposit_data %}
+        <form method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="user_id" value="{{ item.deposit.user_id }}">
+          <tr>
+            <td>{{ item.email }}</td>
+            <td>${{ "%.2f"|format(item.deposit.amount_deposited) }}</td>
+            <td>{{ item.deposit.senders_wallet_address }}</td>
+            <td>{{ item.deposit.senders_wallet_network }}</td>
+            <td>{{ item.deposit.estimated_time_of_sending }}</td>
+            <td>{{ item.deposit.comment }}</td>
+            <td>
+              {% if item.deposit.status == 0 %}
+                Pending
+              {% elif item.deposit.status == 1 %}
+                Rejected
+              {% elif item.deposit.status == 2 %}
+                Confirmed
+              {% endif %}
+            </td>
+            <td>
+              <button type="submit" name="action" value="confirm" class="btn-confirm">Confirm</button>
+            </td>
+            <td>
+              <button type="submit" name="action" value="reject" class="btn-reject">Reject</button>
+            </td>
+          </tr>
+        </form>
+        {% endfor %}
+      </tbody>
+      
+    </table>
+  </div>
+</div>
+{% endblock %}

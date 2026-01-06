@@ -1,0 +1,52 @@
+{% extends "admin_base.html" %}
+{% block content %}
+
+<div class="card referral-table-card">
+  <h2>Referral Rewards Management</h2>
+  <p class="subtext">Confirm and reward referrals made by users</p>
+
+  <div class="responsive-table-wrapper">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container">
+          {% for category, message in messages %}
+            <div class="flash-message {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <table class="referral-table">
+      <thead>
+        <tr>
+          <th>Referred User Email</th>
+          <th>Referred By (Email)</th>
+          <th>Time of Registration</th>
+          <th>Reward Amount ($)</th>
+          <th>Confirm</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in referees %}
+          <tr>
+            <td data-label="Referred User Email">{{ row.referee.email }}</td>
+            <td data-label="Referred By (Email)">{{ row.referrer_email }}</td>
+            <td data-label="Time of Registration">{{ row.referee.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
+            <td data-label="Reward Amount ($)">
+              <form method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="text" name="reward_amount" class="reward-input" placeholder="e.g. 2000.00" required />
+                <input type="hidden" name="referee_id" value="{{ row.referee.user_id }}" />
+            </td>
+            <td data-label="Confirm">
+                <button type="submit" class="btn-confirm">Confirm</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+      
+    </table>
+  </div>
+</div>
+{% endblock content %}

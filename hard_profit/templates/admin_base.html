@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Profit Vault Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <ul class="flashes">
+    {% for category, message in messages %}
+    <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+
+
+  <div class="menu-toggle" onclick="toggleSidebar()">
+    <i class="fa-solid fa-bars"></i>
+  </div>
+
+  <div class="container">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <i class="fa-solid fa-house icon-yellow"></i>
+        <span class="logo-text">Profit Vault Admin</span>
+      </div>
+      <ul class="nav-menu">
+
+
+
+        <a href="{{ url_for('admin_dashboard') }}" style="text-decoration: none; color: inherit;">
+          <li class="nav-item active">
+            <i class="fa-solid fa-table-cells"></i>
+            <span>Admin Dashboard</span>
+          </li>
+        </a>
+
+        <a href="{{ url_for('admin_investment_plan') }}" style="text-decoration: none; color: inherit;">
+          <li class="nav-item active">
+            <i class="fa-solid fa-table-cells"></i>
+            <span>Upload Investments</span>
+          </li>
+        </a>
+
+        <a href="{{ url_for('admin_manage_referrals') }}" style="text-decoration: none; color: inherit;">
+          <li class="nav-item active">
+            <i class="fa-solid fa-table-cells"></i>
+            <span>Manage Referrals</span>
+          </li>
+        </a>
+
+        <a href="{{ url_for('admin_wallet_addresses') }}" style="text-decoration: none; color: inherit;">
+          <li class="nav-item active">
+            <i class="fa-solid fa-table-cells"></i>
+            <span>Edit Wallet Addresses</span>
+          </li>
+        </a>
+
+        <a href="{{ url_for('admin_manage_deposits') }}" style="text-decoration: none; color: inherit;">
+          <li class="nav-item active">
+            <i class="fa-solid fa-table-cells"></i>
+            <span>Manage Deposits</span>
+          </li>
+        </a>
+
+
+        <a href="{{ url_for('admin_users_list') }}" style="text-decoration: none; color: inherit;">
+          <li class="nav-item active">
+            <i class="fa-solid fa-table-cells"></i>
+            <span>Edit User Info</span>
+          </li>
+        </a>
+
+        <a href="{{ url_for('admin_manage_investments') }}" style="text-decoration: none; color: inherit;">
+          <li class="nav-item active">
+            <i class="fa-solid fa-table-cells"></i>
+            <span>Manage Investments</span>
+          </li>
+        </a>
+
+        <a href="{{ url_for('admin_manage_withdrawal') }}" style="text-decoration: none; color: inherit;">
+          <li class="nav-item active">
+            <i class="fa-solid fa-table-cells"></i>
+            <span>Manage Withdrawal</span>
+          </li>
+        </a>
+
+        <a href="{{ url_for('admin_inbox') }}" style="text-decoration: none; color: inherit;">
+          <li class="nav-item active">
+            <i class="fa-solid fa-table-cells"></i>
+            <span>Inbox</span>
+          </li>
+        </a>
+
+      </ul>
+
+
+
+      
+      <div class="logout">
+
+        <a href="{{ url_for('logout', email=session['email']) }}" style="text-decoration: none; color: inherit;">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Logout</span>
+      </a>
+      </div>
+
+
+
+
+
+    </div>
+
+    <main class="main-content">
+
+
+      {% block content %}
+
+      {% endblock content %}
+
+
+    </main>
+  </div>
+
+ 
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
+</body>
+
+</html>

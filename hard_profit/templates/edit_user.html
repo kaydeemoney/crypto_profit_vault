@@ -1,0 +1,62 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+
+
+<div class="p-4 max-w-3xl mx-auto">
+  <h2 class="text-xl font-bold mb-4">Edit User</h2>
+  <form method="POST" action="{{ url_for('update_user', user_id=user.user_id) }}" class="info-grid">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="form-group">
+    <input name="first_name" value="{{ user.first_name }}" placeholder="First Name" class="border p-2 rounded" required>
+    </div>
+    <div class="form-group">
+    <input name="last_name" value="{{ user.last_name }}" placeholder="Last Name" class="border p-2 rounded" required>
+    </div>
+    <div class="form-group">
+    <input name="email" value="{{ user.email }}" placeholder="Email" class="border p-2 rounded" required>
+    </div>
+    <div class="form-group">
+    <input name="mobile" value="{{ user.mobile }}" placeholder="Mobile" class="border p-2 rounded" required>
+  </div>
+    <div class="form-group">
+    <input name="gender" value="{{ user.gender }}" placeholder="Gender" class="border p-2 rounded" required>
+  </div>
+    <div class="form-group">
+    <input name="country" value="{{ user.country }}" placeholder="Country" class="border p-2 rounded" required>
+  </div>
+    <div class="form-group">
+    <input name="state" value="{{ user.state }}" placeholder="State" class="border p-2 rounded" required>
+  </div>
+    <div class="form-group">
+    <input name="username" value="{{ user.username }}" placeholder="Username" class="border p-2 rounded" required>
+  </div>
+    
+  <div class="form-group">
+    <label for="transaction_pin" class="block mb-1 font-medium">Transaction PIN</label>
+    <input id="transaction_pin" name="transaction_pin" value="{{ user.transaction_pin }}" placeholder="Transaction PIN" class="border p-2 rounded" required>
+  </div>
+
+  <div class="form-group">
+    <label for="password" class="block mb-1 font-medium">Password</label>
+    <input id="password" name="password_hash" value="{{ user.password_hash }}" placeholder="password" class="border p-2 rounded" required>
+  </div>
+  
+  
+    <div class="form-group">
+    <input name="registration_referral_id" value="{{ user.registration_referral_id or '' }}" placeholder="Referral ID (optional)" class="border p-2 rounded">
+  </div>
+    <input name="is_admin" value="{{ user.is_admin or '' }}" placeholder="Is Admin (yes/no)" class="border p-2 rounded">
+
+    <div class="md:col-span-2">
+      <button type="submit" class="outline-btn"><i class="fa-solid fa-lock"></i>Save Changes</button>
+    </div>
+  </form>
+
+
+  
+</div>
+
+
+
+{% endblock content %}
