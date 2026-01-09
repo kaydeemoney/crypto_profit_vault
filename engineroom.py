@@ -1503,4 +1503,4 @@ if __name__ == '__main__':
     # and configure SSL/TLS with a proper certificate.
     # For local development, you can use self-signed certificates.
     # Generate them: openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(debug=True)
